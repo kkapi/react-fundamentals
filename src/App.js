@@ -3,6 +3,7 @@ import './styles/App.css';
 import PostList from './components/PostList';
 import MyButton from './components/UI/button/MyButton';
 import MyInput from './components/UI/input/MyInput';
+import PostForm from './components/PostForm';
 
 function App() {
 	const [posts, setPosts] = useState([
@@ -13,36 +14,32 @@ function App() {
 		{ id: 5, title: 'JavaScript5', body: 'Description' },
 	]);
 
-	const [title, setTitle] = useState('');
-	// const bodyInputRef = useRef();
-
-	const addNewPost = (e) => {
-		e.preventDefault();		
+	const createPost = (newPost) => {
+		setPosts([...posts, newPost]);
 	};
+
+	const removePost = (post) => {
+		setPosts(posts.filter(p => post.id !== p.id))
+	}
 
 	return (
 		<div className="App">
-			<form>
-				{/* Управляемый компонент */}
-				<MyInput 
-					type="text"
-					placeholder="Название поста"
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
-				/>
-				{/* Неуправляемый/Неконтролируемый компонент
-				<MyInput
-					ref={bodyInputRef}
-					type="text"
-					placeholder="Описание поста"
-				/> */}
-				<MyButton type="submit" onClick={addNewPost}>
-					Создать
-				</MyButton>
-			</form>
-			<PostList posts={posts} title={'Спиок постов 1'} />
+			<PostForm create={createPost} />
+			<PostList remove={removePost} posts={posts} title={'Спиок постов 1'} />
 		</div>
 	);
 }
 
 export default App;
+
+//Некотролируемый компонент
+// const bodyInputRef = useRef();
+
+{
+	/* Неуправляемый/Неконтролируемый компонент
+				<MyInput
+					ref={bodyInputRef}
+					type="text"
+					placeholder="Описание поста"
+				/> */
+}
