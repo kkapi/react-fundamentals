@@ -1,8 +1,9 @@
 import React from 'react';
 
-const MySelect = ({ option, defaultValue, value, onChange }) => {
+const MySelect = ({ option, defaultValue, value, onChange, ...props }) => {
 	return (
 		<select
+            {...props}
             value={value}
             onChange={event => onChange(event.target.value)}
         >
