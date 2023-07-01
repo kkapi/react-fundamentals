@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './App.css';
 import Counter from './components/Counter';
+import { ClassCounter } from './components/ClassCounter';
+
 
 function App() {
 	const [likes, setLikes] = useState(0);
@@ -23,6 +25,8 @@ function App() {
 			<input type="text" onChange={event => setValue(event.target.value)} value={value}/>
 			<Counter />
 			<Counter />
+			<hr/>
+			<ClassCounter/>
 		</div>
 	);
 }
