@@ -2,9 +2,9 @@ import React from 'react';
 import MyInput from './UI/input/MyInput';
 import MySelect from './UI/select/MySelect';
 
-const PostFilter = ({ filter, setFilter }) => {
+const PostFilter = ({ filter, setFilter, ...props }) => {
 	return (
-		<div>
+		<div {...props}>
 			<MyInput
 				placeholder="Поиск..."
 				value={filter.query}
@@ -13,7 +13,7 @@ const PostFilter = ({ filter, setFilter }) => {
 				}
 			/>
 			<MySelect
-				style={{ margin: '15px' }}
+				style={{ margin: '10px 0' }}
 				value={filter.sort}
 				onChange={(selectedSort) =>
 					setFilter({ ...filter, sort: selectedSort })

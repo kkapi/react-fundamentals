@@ -33,7 +33,7 @@ const PostForm = ({create}) => {
 				onChange={(e) => setPost({ ...post, body: e.target.value })}
 			/>
 
-			<MyButton type="submit" onClick={addNewPost}>
+			<MyButton style={{margin: '5px 0'}}type="submit" onClick={addNewPost}>
 				Создать
 			</MyButton>
 		</form>
