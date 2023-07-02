@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PostFilter from './components/PostFilter';
 import PostForm from './components/PostForm';
 import PostList from './components/PostList';
@@ -32,9 +32,12 @@ function App() {
 		setPosts(response.data)
 	}
 
+	useEffect(() => {
+		fetchPosts();
+	}, [])
+
 	return (
 		<div className="App">
-			<button onClick={fetchPosts}>GET POST</button>
 			<MyModal visible={modal} setVisible={setModal}>
 				<PostForm create={createPost} />
 			</MyModal>
