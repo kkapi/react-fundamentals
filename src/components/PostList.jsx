@@ -1,6 +1,6 @@
 import React from 'react';
-import PostItem from './PostItem';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import PostItem from './PostItem';
 
 const PostList = ({ posts, title, remove }) => {
 	if (!posts.length) {
@@ -19,7 +19,7 @@ const PostList = ({ posts, title, remove }) => {
 					>
 						<PostItem
 							remove={remove}
-							number={index + 1}
+							number={post.id}
 							post={post}
 						/>
 					</CSSTransition>

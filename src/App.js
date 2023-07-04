@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
+import PostService from './API/PostService';
 import PostFilter from './components/PostFilter';
 import PostForm from './components/PostForm';
 import PostList from './components/PostList';
-import './styles/App.css';
-import MyModal from './components/UI/modal/MyModal';
 import MyButton from './components/UI/button/MyButton';
-import { usePosts } from './hooks/usePost';
-import PostService from './API/PostService';
 import MyLoader from './components/UI/loader/MyLoader';
+import MyModal from './components/UI/modal/MyModal';
+import MyPagination from './components/UI/pagination/MyPagination';
 import { useFetching } from './hooks/useFetching';
-import { getPageCount } from './utils/pages';
+import { usePosts } from './hooks/usePost';
+import './styles/App.css';
+import { getPageCount, getPagesArray } from './utils/pages';
 
 function App() {
 	const [posts, setPosts] = useState([]);
@@ -19,25 +20,29 @@ function App() {
 	const [limit, setLimit] = useState(10);
 	const [page, setPage] = useState(1);
 	const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+
+	const [pages, setPages] = useState([]);
+
 	const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
 		const response = await PostService.getLimit(limit, page);
 		setPosts(response.data);
 		const totalCount = response.headers['x-total-count'];
+		setPages(getPagesArray(getPageCount(totalCount, limit)));
 		setTotalPages(getPageCount(totalCount, limit));
 	});
 
-	const createPost = (newPost) => {
+	const createPost = newPost => {
 		setPosts([...posts, newPost]);
 		setModal(false);
 	};
 
-	const removePost = (post) => {
-		setPosts(posts.filter((p) => post.id !== p.id));
+	const removePost = post => {
+		setPosts(posts.filter(p => post.id !== p.id));
 	};
 
 	useEffect(() => {
 		fetchPosts();
-	}, []);
+	}, [page]);
 
 	return (
 		<div className="App">
@@ -68,6 +73,7 @@ function App() {
 					title={'Спиcок постов 1'}
 				/>
 			)}
+			<MyPagination pages={pages} setPage={setPage} page={page} />
 		</div>
 	);
 }
