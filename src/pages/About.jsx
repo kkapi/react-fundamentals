@@ -1,7 +1,11 @@
 import React from 'react';
 
 const About = () => {
-	return <h1>React fundamentials</h1>;
+	return (
+		<div>
+			<h1>React fundamentials</h1>
+		</div>
+	);
 };
 
 export default About;

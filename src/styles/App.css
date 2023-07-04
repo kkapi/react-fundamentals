@@ -24,6 +24,11 @@
 	align-items: center;
 }
 
+.post_butns {
+	display: flex;
+	gap: 5px;
+}
+
 .post-enter {
 	opacity: 0;
 }
