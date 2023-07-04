@@ -1,16 +1,18 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import About from '../pages/About';
-import PostPage from '../pages/PostPage';
-import Posts from '../pages/Posts';
+import { privateRoutes, publicRoutes } from '../router';
 
 const AppRouter = () => {
+	const isAuth = true;
 	return (
 		<Routes>
-			<Route path="*" element={<About />} />
-			<Route path="/posts" element={<Posts />} />
-			<Route path="/about" element={<About />} />
-			<Route path="/posts/:id" element={<PostPage />} />
+			{isAuth &&
+				privateRoutes.map(route => (
+					<Route path={route.path} element={route.component} />
+				))}
+			{publicRoutes.map(route => (
+				<Route path={route.path} element={route.component} />
+			))}
 		</Routes>
 	);
 };
