@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PostService from '../API/PostService';
 import PostFilter from '../components/PostFilter';
 import PostForm from '../components/PostForm';
@@ -20,8 +20,8 @@ function Posts() {
 	const [limit, setLimit] = useState(10);
 	const [page, setPage] = useState(1);
 	const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
-
 	const [pages, setPages] = useState([]);
+	const lastElement = useRef();
 
 	const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
 		const response = await PostService.getLimit(limit, page);
@@ -41,8 +41,31 @@ function Posts() {
 	};
 
 	useEffect(() => {
-		fetchPosts();
+		fetchPosts(limit, page);
 	}, [page]);
+
+	const callback = (entries, observer) => {
+		if (entries[0].isIntersecting) {
+			console.log(page);
+			setPage(page + 1);
+		}
+	};
+
+	const options = {
+		root: null,
+		rootMargin: '0px',
+		treshold: 1.0,
+	};
+
+	useEffect(() => {
+		if (isPostsLoading) return;
+		const observer = new IntersectionObserver(callback, options);
+		if (lastElement.current) observer.observe(lastElement.current);
+
+		return () => {
+			if (lastElement.current) observer.unobserve(lastElement.current);
+		};
+	}, [isPostsLoading]);
 
 	return (
 		<div className="App">
@@ -67,11 +90,17 @@ function Posts() {
 					<MyLoader />
 				</div>
 			) : (
-				<PostList
-					remove={removePost}
-					posts={sortedAndSearchedPosts}
-					title={'Спиcок постов 1'}
-				/>
+				<div>
+					<PostList
+						remove={removePost}
+						posts={sortedAndSearchedPosts}
+						title={'Спиcок постов 1'}
+					/>
+					<div
+						ref={lastElement}
+						style={{ height: '20px', backgroundColor: 'red' }}
+					></div>
+				</div>
 			)}
 			<MyPagination pages={pages} setPage={setPage} page={page} />
 		</div>
